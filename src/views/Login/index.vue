@@ -2,7 +2,12 @@
   <div>
     <el-card
       class="login-card"
-      :body-style="{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '60px'}"
+      :body-style="{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '60px'
+      }"
     >
       <el-form ref="loginForm" inline :model="formData" :rules="rules">
         <el-form-item prop="nickname">
@@ -17,27 +22,32 @@
 </template>
 
 <script>
+import socket from "@/socket";
 export default {
   data() {
     return {
       // 表单信息
       formData: {
-        nickname: ''
+        nickname: ""
       },
 
       // 校验规则
       rules: {
-        nickname: [{ required: true, message: '请输入您的昵称' }]
+        nickname: [{ required: true, message: "请输入您的昵称" }]
       }
-    }
+    };
   },
 
   methods: {
     enterGame() {
-      // ...
+      // 发消息测试
+      //isExist是发完消息后的回调
+      socket.emit("check_user_exist", this.formData.nickname, isExist => {
+        console.log(isExist);
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>
