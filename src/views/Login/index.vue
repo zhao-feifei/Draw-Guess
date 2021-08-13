@@ -44,6 +44,7 @@ export default {
         if (!flag) return;
         const nickname = this.formData.nickname;
         const isExist = await this.$store.dispatch("checkUserExist", nickname);
+        console.log(isExist);
         if (isExist) {
           MessageBox.alert("大哥，换个名儿吧！");
         } else {

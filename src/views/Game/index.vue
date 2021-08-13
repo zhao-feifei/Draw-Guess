@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import AppHeader from './components/app-header'
-import AppStage from './components/app-stage'
-import AppSidePanel from './components/app-side-panel'
+import AppHeader from "./components/app-header";
+import AppStage from "./components/app-stage";
+import AppSidePanel from "./components/app-side-panel";
 export default {
   components: {
     AppHeader,
@@ -31,13 +31,12 @@ export default {
     AppSidePanel
   },
   created() {
-
+    //一进入首页通知服务器
+    this.$store.dispatch("sendUserEnter");
   },
 
-  methods: {
-
-  }
-}
+  methods: {}
+};
 </script>
 
 <style lang="scss" scoped>

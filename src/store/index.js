@@ -1,12 +1,21 @@
 import Vue from "vue";
-import Vuex from "vuex";
+import Vuex from "../../node_modules/vuex";
 import socket from "../socket";
 
 Vue.use(Vuex);
 
-const state = {};
+const state = {
+  nickname: "", //当前用户名称
+  nicknames: [], //房间用户列表
+  holder: "", //主持人
+  lines: [] //绘图信息
+};
 
-const mutations = {};
+const mutations = {
+  updateNickname(state, nickname) {
+    state.nickname = nickname || "";
+  }
+};
 
 const actions = {
   //确认用户名是否占用
@@ -16,6 +25,13 @@ const actions = {
         resolve(isExist);
       });
     });
+  },
+  //进入房间后通知服务器
+  sendUserEntered(context) {
+    const nickname = localStorage.getItem("nickname");
+    socket.emit("enter", nickname);
+    // 将nickname设置到Vuex中
+    context.commit("updateNickname", nickname);
   }
 };
 
