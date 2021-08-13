@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import socket from "@/socket";
+import { MessageBox } from "element-ui";
 export default {
   data() {
     return {
@@ -40,10 +40,18 @@ export default {
 
   methods: {
     enterGame() {
-      // 发消息测试
-      //isExist是发完消息后的回调
-      socket.emit("check_user_exist", this.formData.nickname, isExist => {
-        console.log(isExist);
+      this.$refs.loginForm.validate(async flag => {
+        if (!flag) return;
+        const nickname = this.formData.nickname;
+        const isExist = await this.$store.dispatch("checkUserExist", nickname);
+        if (isExist) {
+          MessageBox.alert("大哥，换个名儿吧！");
+        } else {
+          //昵称可以用
+          localStorage.setItem("nickname", nickname);
+          //跳转到首页
+          this.$router.push("/home");
+        }
       });
     }
   }
