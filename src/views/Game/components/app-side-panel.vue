@@ -3,26 +3,18 @@
     <!-- 玩家列表 -->
     <div class="panel-area">
       <ul class="participants">
-        <li>
-          <span>xxx（我）</span>
-          <el-tag size="mini">主持</el-tag>
-        </li>
-        <li>
-          <span>xxx</span>
-        </li>
-        <li>
-          <span>xxx</span>
+        <li v-for="item in nicknames" :key="item">
+          <span>{{ item }} {{ item === nickname ? "(我)" : "" }}</span>
+          <el-tag v-if="item === holder" size="mini">主持</el-tag>
         </li>
       </ul>
     </div>
 
     <!-- 按钮工具栏 -->
     <div class="panel-area button-area">
-      <el-button
-        type="primary"
-        size="small"
-        icon="el-icon-edit"
-      >主持游戏</el-button>
+      <el-button type="primary" size="small" icon="el-icon-edit"
+        >主持游戏</el-button
+      >
 
       <!-- <el-button
         type="warning"
@@ -36,11 +28,9 @@
         icon="el-icon-magic-stick"
       >猜答案</el-button> -->
 
-      <el-button
-        type="danger"
-        size="small"
-        icon="el-icon-switch-button"
-      >退出游戏</el-button>
+      <el-button type="danger" size="small" icon="el-icon-switch-button"
+        >退出游戏</el-button
+      >
     </div>
 
     <!-- 弹出框：主持人设置答案 -->
@@ -67,24 +57,28 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="answerDialogVisible = false">取 消</el-button>
-        <el-button
-          type="primary"
-          @click="saveAnswerDialogHandler"
-        >确 定</el-button>
+        <el-button type="primary" @click="saveAnswerDialogHandler"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
   </el-card>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       resultDialogVisible: false,
-      expectImageName: '',
+      expectImageName: "",
       answerDialogVisible: false,
-      inputImageName: ''
-    }
+      inputImageName: ""
+    };
+  },
+
+  computed: {
+    ...mapState(["nicknames", "nickname", "holder"])
   },
 
   methods: {
@@ -92,7 +86,7 @@ export default {
 
     saveAnswerDialogHandler() {}
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
