@@ -14,6 +14,15 @@ const state = {
 const mutations = {
   updateNickname(state, nickname) {
     state.nickname = nickname || "";
+  },
+  updateNicknames(state, nicknames) {
+    state.nicknames = nicknames || [];
+  },
+  updateHolder(state, holder) {
+    state.holder = holder || "";
+  },
+  updateLines(state, lines) {
+    state.lines = lines || [];
   }
 };
 
