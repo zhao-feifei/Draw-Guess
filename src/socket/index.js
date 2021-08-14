@@ -16,5 +16,10 @@ socket.on("room_info", ({ nicknames, holder, lines }) => {
   store.commit("updateLines", lines);
 });
 
+//监听user_enter事件，通知有新人进入房间了
+socket.on("user_enter", nickname => {
+  store.commit("addToNicknames", nickname);
+});
+
 //暴露出去让其他模块也可以使用此对象
 export default socket;

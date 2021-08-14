@@ -23,6 +23,13 @@ const mutations = {
   },
   updateLines(state, lines) {
     state.lines = lines || [];
+  },
+  //将新人追加到昵称列表中
+  addToNicknames(state, nickname) {
+    //用户不存在才追加
+    if (!state.nicknames.includes(nickname)) {
+      state.nicknames.push(nickname);
+    }
   }
 };
 
