@@ -5,6 +5,7 @@ import socket from "../socket";
 Vue.use(Vuex);
 
 const state = {
+  connected: false, //连接状态
   nickname: "", //当前用户名称
   nicknames: [], //房间用户列表
   holder: "", //主持人
@@ -30,6 +31,10 @@ const mutations = {
     if (!state.nicknames.includes(nickname)) {
       state.nicknames.push(nickname);
     }
+  },
+  //更新connected状态
+  updateConnected(state, flag) {
+    state.connected = flag;
   }
 };
 
@@ -51,7 +56,11 @@ const actions = {
   }
 };
 
-const getters = {};
+const getters = {
+  isGameStarted() {
+    return !!state.holder;
+  }
+};
 
 export default new Vuex.Store({
   state,

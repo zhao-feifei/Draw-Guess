@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-// import socket from "./socket";
+import store from "@/store";
 
 //本机可以省略地址
 const socket = io();
@@ -19,6 +19,16 @@ socket.on("room_info", ({ nicknames, holder, lines }) => {
 //监听user_enter事件，通知有新人进入房间了
 socket.on("user_enter", nickname => {
   store.commit("addToNicknames", nickname);
+});
+
+//监听websocket的连接，控制按钮的显示状态
+socket.on("connect", () => {
+  store.commit("updateConnected", true);
+});
+
+//监听websocket的断开，控制按钮的显示状态
+socket.on("disconnect", () => {
+  store.commit("updateConnected", false);
 });
 
 //暴露出去让其他模块也可以使用此对象
