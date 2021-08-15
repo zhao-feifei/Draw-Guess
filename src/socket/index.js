@@ -1,5 +1,6 @@
 import io from "socket.io-client";
 import store from "@/store";
+import { MessageBox, Notification } from "element-ui";
 
 //本机可以省略地址
 const socket = io();
@@ -31,5 +32,15 @@ socket.on("disconnect", () => {
   store.commit("updateConnected", false);
 });
 
-//暴露出去让其他模块也可以使用此对象
+// 处理游戏成功开始;
+store.on("game_started", holder => {
+  store.commit("updateHolder", holder);
+  Notification.success(`${holder}作为主持人已经开始了游戏!`);
+});
+//游戏已经开始
+store.on("already_started", holder => {
+  store.commit("updateHolder", holder);
+  Notification.alert(`游戏正在进行中！主持人是${holder}`);
+});
+// 暴露出去让其他模块也可以使用此对象;
 export default socket;
