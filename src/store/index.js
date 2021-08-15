@@ -53,6 +53,11 @@ const actions = {
     socket.emit("enter", nickname);
     // 将nickname设置到Vuex中
     context.commit("updateNickname", nickname);
+  },
+  //告诉服务器开始游戏
+  sendStartGame(context, answer) {
+    //发消息通知服务器
+    socket.emit("start_game", answer);
   }
 };
 

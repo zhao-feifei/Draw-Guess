@@ -96,7 +96,15 @@ export default {
     },
     //主持人设置答案
     saveDialogHandler() {
-      console.log("121");
+      // console.log("121");
+      //校验是否为空
+      if (!this.expectImageName) {
+        this.$message.error("答案不能为空");
+      }
+      //发送开始游戏请求
+      this.$store.dispatch("sendStartGame", this.expectImageName);
+      //关闭弹框
+      this.resultDialogVisible = false;
     },
 
     saveAnswerDialogHandler() {}
