@@ -4,7 +4,7 @@
     <div class="panel-area">
       <ul class="participants">
         <li v-for="item in nicknames" :key="item">
-          <span>{{ item }} {{ item === nickname ? "(我)" : "" }}</span>
+          <span>{{ item }}</span>
           <el-tag v-if="item === holder" size="mini">主持</el-tag>
         </li>
       </ul>
@@ -12,7 +12,12 @@
 
     <!-- 按钮工具栏 -->
     <div class="panel-area button-area">
-      <el-button type="primary" size="small" icon="el-icon-edit"
+      <el-button
+        v-if="!isGameStarted"
+        type="primary"
+        size="small"
+        icon="el-icon-edit"
+        @click="startGameHandler"
         >主持游戏</el-button
       >
 
@@ -66,7 +71,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -78,11 +83,21 @@ export default {
   },
 
   computed: {
-    ...mapState(["nicknames", "nickname", "holder"])
+    ...mapState(["nicknames", "nickname", "holder"]),
+    ...mapGetters(["isGameStarted"])
   },
 
   methods: {
-    saveDialogHandler() {},
+    startGameHandler() {
+      //显示弹框
+      this.resultDialogVisible = true;
+      //清空输入框
+      this.expectImageName = "";
+    },
+    //主持人设置答案
+    saveDialogHandler() {
+      console.log("121");
+    },
 
     saveAnswerDialogHandler() {}
   }
