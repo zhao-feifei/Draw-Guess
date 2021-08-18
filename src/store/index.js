@@ -1,18 +1,21 @@
 import Vue from "vue";
-import Vuex from "../../node_modules/vuex";
-import socket from "../socket";
+import Vuex from "vuex";
+import socket from "@/socket";
 
 Vue.use(Vuex);
 
 const state = {
-  connected: false, //连接状态
-  nickname: "", //当前用户名称
-  nicknames: [], //房间用户列表
-  holder: "", //主持人
-  lines: [] //绘图信息
+  connected: false, // 连接状态
+  nickname: "", // 当前用户昵称
+  nicknames: [], // 房间用户昵称列表
+  holder: "", // 游戏主持人
+  lines: [] // 房间的绘图信息 (画了多少根线)
 };
 
 const mutations = {
+  updateConnected(state, connected) {
+    state.connected = connected;
+  },
   updateNickname(state, nickname) {
     state.nickname = nickname || "";
   },
@@ -25,21 +28,26 @@ const mutations = {
   updateLines(state, lines) {
     state.lines = lines || [];
   },
-  //将新人追加到昵称列表中
+
   addToNicknames(state, nickname) {
-    //用户不存在才追加
     if (!state.nicknames.includes(nickname)) {
       state.nicknames.push(nickname);
     }
   },
-  //更新connected状态
-  updateConnected(state, flag) {
-    state.connected = flag;
+  drawNewLine(state, newLine) {
+    state.lines.push(newLine);
+  },
+  updateNewLine(state, lastLine) {
+    const line = state.lines[state.lines.length - 1];
+    line.points = lastLine.points;
+  },
+  delFromNicknames(state, nickname) {
+    state.nicknames = state.nicknames.filter(item => item !== nickname);
   }
 };
 
 const actions = {
-  //确认用户名是否占用
+  // 确认用户名是否存在
   checkUserExist(context, nickname) {
     return new Promise((resolve, reject) => {
       socket.emit("check_user_exist", nickname, isExist => {
@@ -47,17 +55,19 @@ const actions = {
       });
     });
   },
-  //进入房间后通知服务器
-  sendUserEntered(context) {
+  // 进入房间
+  sendUserEnter(context) {
     const nickname = localStorage.getItem("nickname");
     socket.emit("enter", nickname);
-    // 将nickname设置到Vuex中
     context.commit("updateNickname", nickname);
   },
-  //告诉服务器开始游戏
-  sendStartGame(context, answer) {
-    //发消息通知服务器
-    socket.emit("start_game", answer);
+  // 开始游戏申请
+  sendStartGame(context, imageAnswer) {
+    socket.emit("start_game", imageAnswer);
+  },
+  // 结束游戏申请
+  sendStopGame(context) {
+    socket.emit("stop_game");
   }
 };
 

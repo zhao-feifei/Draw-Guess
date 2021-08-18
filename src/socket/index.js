@@ -32,15 +32,28 @@ socket.on("disconnect", () => {
   store.commit("updateConnected", false);
 });
 
-// 处理游戏成功开始;
-store.on("game_started", holder => {
+// 处理游戏开始
+socket.on("game_started", holder => {
   store.commit("updateHolder", holder);
-  Notification.success(`${holder}作为主持人已经开始了游戏!`);
+  Notification.success(
+    `${holder} 作为主持人开始了新游戏，大家可以开始踊跃猜答案啦！`
+  );
 });
-//游戏已经开始
-store.on("already_started", holder => {
+
+// 处理游戏已经开始, 不能重复开始
+socket.on("already_started", holder => {
   store.commit("updateHolder", holder);
-  Notification.alert(`游戏正在进行中！主持人是${holder}`);
+  MessageBox.alert("当前已有游戏在进行中，主持人是：" + holder);
 });
+// 处理终止游戏
+socket.on("game_stoped", () => {
+  // 1. 清理相关数据
+  store.commit("updateHolder", "");
+  store.commit("updateLines", []);
+
+  // 2. 弹出提示消息
+  Notification.warning("主持人终止了当前游戏");
+});
+
 // 暴露出去让其他模块也可以使用此对象;
 export default socket;

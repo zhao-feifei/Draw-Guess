@@ -20,18 +20,23 @@
         @click="startGameHandler"
         >主持游戏</el-button
       >
-
-      <!-- <el-button
+      <!-- 主持人显示终止游戏 -->
+      <el-button
+        v-if="isGameStarted && nickname === holder"
         type="warning"
         size="small"
         icon="el-icon-delete"
-      >终止游戏</el-button> -->
+        @click="stopGameHandler"
+        >终止游戏</el-button
+      >
 
-      <!-- <el-button
+      <el-button
+        v-if="isGameStarted && nickname !== holder"
         type="success"
         size="small"
         icon="el-icon-magic-stick"
-      >猜答案</el-button> -->
+        >猜答案</el-button
+      >
 
       <el-button type="danger" size="small" icon="el-icon-switch-button"
         >退出游戏</el-button
@@ -106,7 +111,17 @@ export default {
       //关闭弹框
       this.resultDialogVisible = false;
     },
-
+    //终止游戏
+    stopGameHandler() {
+      this.$confirm("您确定要终止游戏吗?", "温馨提示")
+        .then(() => {
+          //发送终止游戏申请
+          this.$store.dispatch("sendStopGame");
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
     saveAnswerDialogHandler() {}
   }
 };
