@@ -74,6 +74,9 @@ const actions = {
   },
   sendUpdateNewLine(context, line) {
     socket.emit('update_line', line)
+  },
+  sendAnswerGame(context, inputImageName) {
+    socket.emit('answer_game', inputImageName)
   }
 }
 

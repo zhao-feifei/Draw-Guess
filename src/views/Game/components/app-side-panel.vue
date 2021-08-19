@@ -35,6 +35,7 @@
         type="success"
         size="small"
         icon="el-icon-magic-stick"
+        @click="answerGameHandler"
         >猜答案</el-button
       >
 
@@ -122,7 +123,24 @@ export default {
           console.log(e)
         })
     },
-    saveAnswerDialogHandler() {}
+    answerGameHandler() {
+      //显示弹框并清空
+      this.answerDialogVisible = true
+      this.inputImageName = ''
+    },
+    //点击确定按钮后触发的处理函数
+    saveAnswerDialogHandler() {
+      //检查答案是否为空
+      if (!this.inputImageName) {
+        this.$message.error('答案不能为空!')
+        return
+      }
+      //发送消息到服务器
+      this.$store.dispatch('sendAnswerGame', this.inputImageName)
+
+      //关闭弹窗
+      this.answerDialogVisible = false
+    }
   }
 }
 </script>

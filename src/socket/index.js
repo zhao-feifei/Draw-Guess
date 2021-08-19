@@ -64,5 +64,21 @@ socket.on('updating_line', line => {
   store.commit('updateNewLine', line)
 })
 
+//监听猜答案的结果
+
+socket.on('game_answered', ({ alreadyDone, success, nickname, answer }) => {
+  //已经答对
+  if (alreadyDone) {
+    MessageBox.alert('当前答案已经被猜中了！')
+    return
+  }
+  //没有答对
+  if (!success) {
+    Notification.error(`玩家${nickname}猜的答案不对!${answer}`)
+  }
+  //答对了
+  MessageBox.alert(`玩家${nickname}猜中了正确答案!${answer}`)
+})
+
 // 暴露出去让其他模块也可以使用此对象;
 export default socket
