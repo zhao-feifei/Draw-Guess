@@ -55,5 +55,14 @@ socket.on('game_stoped', () => {
   Notification.warning('主持人终止了当前游戏')
 })
 
+//监听线的开始绘制
+socket.on('starting_line', line => {
+  store.commit('drawNewLine', line)
+})
+//监听线的持续绘制
+socket.on('updating_line', line => {
+  store.commit('updateNewLine', line)
+})
+
 // 暴露出去让其他模块也可以使用此对象;
 export default socket

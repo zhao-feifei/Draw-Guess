@@ -68,12 +68,21 @@ const actions = {
   // 结束游戏申请
   sendStopGame(context) {
     socket.emit('stop_game')
+  },
+  sendDrawNewLine(context, line) {
+    socket.emit('new_line', line)
+  },
+  sendUpdateNewLine(context, line) {
+    socket.emit('update_line', line)
   }
 }
 
 const getters = {
   isGameStarted() {
     return !!state.holder
+  },
+  isGameHolder() {
+    return state.nickname === state.holder
   }
 }
 

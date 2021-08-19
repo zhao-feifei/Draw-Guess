@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -35,7 +35,8 @@ export default {
   },
 
   computed: {
-    ...mapState(['lines'])
+    ...mapState(['lines']),
+    ...mapGetters(['isGameStarted', 'isGameHolder'])
   },
 
   mounted() {
@@ -46,6 +47,8 @@ export default {
   methods: {
     // 鼠标按下
     mousedownHandler(e) {
+      //只有游戏开始并且是主持人才能开始绘画
+      if (!this.isGameHolder || !this.isGameStarted) return
       this.painting = true
       // 开启会话状态创建新线条
       const newLine = {
@@ -55,6 +58,8 @@ export default {
       }
       //本地划线存到vuex中
       this.$store.commit('drawNewLine', newLine)
+      //请求服务器更新新线
+      this.$store.dispatch('sendDrawNewLine', newLine)
     },
 
     // 鼠标拖动
@@ -65,6 +70,8 @@ export default {
         lastLine.points = lastLine.points.concat([e.evt.layerX, e.evt.layerY])
         //提交并更新vuex中最后一项的points
         this.$store.commit('updateNewLine', lastLine)
+        //请求服务器同步线的更新
+        this.$store.dispatch('sendUpdateNewLine', lastLine)
       }
     },
 
