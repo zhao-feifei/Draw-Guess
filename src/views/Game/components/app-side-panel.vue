@@ -76,55 +76,55 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters, mapState } from 'vuex'
 export default {
   data() {
     return {
       resultDialogVisible: false,
-      expectImageName: "",
+      expectImageName: '',
       answerDialogVisible: false,
-      inputImageName: ""
-    };
+      inputImageName: ''
+    }
   },
 
   computed: {
-    ...mapState(["nicknames", "nickname", "holder"]),
-    ...mapGetters(["isGameStarted"])
+    ...mapState(['nicknames', 'nickname', 'holder']),
+    ...mapGetters(['isGameStarted'])
   },
 
   methods: {
     startGameHandler() {
       //显示弹框
-      this.resultDialogVisible = true;
+      this.resultDialogVisible = true
       //清空输入框
-      this.expectImageName = "";
+      this.expectImageName = ''
     },
     //主持人设置答案
     saveDialogHandler() {
       // console.log("121");
       //校验是否为空
       if (!this.expectImageName) {
-        this.$message.error("答案不能为空");
+        this.$message.error('答案不能为空')
       }
       //发送开始游戏请求
-      this.$store.dispatch("sendStartGame", this.expectImageName);
+      this.$store.dispatch('sendStartGame', this.expectImageName)
       //关闭弹框
-      this.resultDialogVisible = false;
+      this.resultDialogVisible = false
     },
     //终止游戏
     stopGameHandler() {
-      this.$confirm("您确定要终止游戏吗?", "温馨提示")
+      this.$confirm('您确定要终止游戏吗?', '温馨提示')
         .then(() => {
           //发送终止游戏申请
-          this.$store.dispatch("sendStopGame");
+          this.$store.dispatch('sendStopGame')
         })
         .catch(e => {
-          console.log(e);
-        });
+          console.log(e)
+        })
     },
     saveAnswerDialogHandler() {}
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
