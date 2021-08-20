@@ -75,9 +75,22 @@ socket.on('game_answered', ({ alreadyDone, success, nickname, answer }) => {
   //没有答对
   if (!success) {
     Notification.error(`玩家${nickname}猜的答案不对!${answer}`)
+    return
   }
   //答对了
   MessageBox.alert(`玩家${nickname}猜中了正确答案!${answer}`)
+})
+
+socket.on('user_leave', nickname => {
+  //从vuex  nicknames中移除
+  store.commit('delFromNicknames', nickname)
+
+  //如果主持人离开  提示所有人并且清空信息
+  if (nickname === store.state.holder) {
+    store.commit('updateHolder', '')
+    store.commit('updateLines', [])
+    Notification.error('主持人离开了游戏!')
+  }
 })
 
 // 暴露出去让其他模块也可以使用此对象;

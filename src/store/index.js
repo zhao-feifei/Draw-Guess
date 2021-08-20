@@ -77,6 +77,12 @@ const actions = {
   },
   sendAnswerGame(context, inputImageName) {
     socket.emit('answer_game', inputImageName)
+  },
+  sendUserLeave(context) {
+    //发送退出消息
+    socket.emit('leave')
+    context.commit('updateNickname', '')
+    localStorage.removeItem('nickname')
   }
 }
 

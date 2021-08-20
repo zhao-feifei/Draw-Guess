@@ -39,7 +39,11 @@
         >猜答案</el-button
       >
 
-      <el-button type="danger" size="small" icon="el-icon-switch-button"
+      <el-button
+        type="danger"
+        size="small"
+        icon="el-icon-switch-button"
+        @click="exitHandler"
         >退出游戏</el-button
       >
     </div>
@@ -140,6 +144,17 @@ export default {
 
       //关闭弹窗
       this.answerDialogVisible = false
+    },
+    //退出游戏
+    exitHandler() {
+      this.$confirm('是否要退出游戏?', '温馨提示')
+        .then(() => {
+          //发送退出游戏申请
+          this.$store.dispatch('sendUserLeave')
+          //跳转到登录
+          this.$router.replace('/login')
+        })
+        .catch(e => {})
     }
   }
 }
