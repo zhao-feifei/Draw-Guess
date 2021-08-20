@@ -13,4 +13,22 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  const nickname = localStorage.getItem('nickname')
+  if (nickname) {
+    if (to.path === '/login') {
+      next({ path: '/home' })
+    } else {
+      next()
+    }
+  } else {
+    //没有昵称，不允许访问首页
+    if (to.path === '/login') {
+      next()
+    } else {
+      next({ path: '/login' })
+    }
+  }
+})
+
 export default router
